@@ -3,6 +3,7 @@
 MainShip::MainShip() {
     this->controls = NULL;
     this->moveControls = new CEMoveControls();
+    this->moveControls->setPixelsPerSecond(100);
 }
 
 MainShip::~MainShip() {

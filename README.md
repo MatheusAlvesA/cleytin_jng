@@ -1,3 +1,3 @@
-# Cleytin Hello World
+# Cleytin Jogo de Navinha Genérico
 
-Este projeto contém o app mais básico usando a Cleytin Engine. Apenas um olá mundo na tela
+Este projeto é um jogo de nave simples, como prova de conceito para o console Cleytin

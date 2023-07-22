@@ -6,6 +6,7 @@
 #include "sprites.h"
 #include "cleytin_controls.h"
 #include "ce_move_controls.h"
+#include "main_laser_beam.h"
 
 class MainShip : public CEColorfulBitmap {
 public:
@@ -16,9 +17,13 @@ public:
     void setControls(CleytinControls *controls);
 
 private:
+    CleytinEngine *engine;
     CleytinControls *controls;
     CEMoveControls *moveControls;
     void handleControls();
+    bool fire();
+    uint64_t lastFire;
+    unsigned int fireRate; // ms
 };
 
 #endif

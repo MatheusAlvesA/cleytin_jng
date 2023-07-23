@@ -6,7 +6,6 @@ void JNG::run(CleytinEngine *engine) {
 
     controls->init();
     mainShip->setControls(controls);
-    mainShip->setSizeMultiplier(3);
     engine->addObject(mainShip);
 
     while(1) { // Essa 'fase' do game nunca termina
@@ -24,8 +23,7 @@ void JNG::spawnMeteor(CleytinEngine *engine) {
     }
 
     DefaultMeteor *meteor = new DefaultMeteor();
-    meteor->setPos(140, 0);
-    //meteor->setPos(rand() % 280, 0);
+    meteor->setPos(rand() % 280, 0);
     engine->addObject(meteor);
     this->lastMeteorSpawn = esp_timer_get_time();
 }

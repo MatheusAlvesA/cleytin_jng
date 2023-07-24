@@ -7,6 +7,8 @@
 #include "cleytin_controls.h"
 #include "ce_move_controls.h"
 #include "main_laser_beam.h"
+#include "default_meteor.h"
+#include <functional>
 
 class MainShip : public CEColorfulBitmap {
 public:
@@ -15,15 +17,18 @@ public:
     void setup(CleytinEngine *engine);
     void loop(CleytinEngine *engine);
     void setControls(CleytinControls *controls);
+    void setOnMainShipDestroyed(std::function<void()> callback);
 
 private:
     CleytinEngine *engine;
     CleytinControls *controls;
     CEMoveControls *moveControls;
     void handleControls();
+    void checkColisions(CleytinEngine *engine);
     bool fire();
     uint64_t lastFire;
     unsigned int fireRate; // ms
+    std::function<void()> onMainShipDestroyed;
 };
 
 #endif

@@ -7,10 +7,15 @@ MainShip::MainShip() {
     this->fireRate = 500;
     this->moveControls = new CEMoveControls();
     this->moveControls->setPixelsPerSecond(100);
+    this->onMainShipDestroyed = NULL;
 }
 
 MainShip::~MainShip() {
     delete this->moveControls;
+}
+
+void MainShip::setOnMainShipDestroyed(std::function<void()> callback) {
+    this->onMainShipDestroyed = callback;
 }
 
 void MainShip::setup(CleytinEngine *engine) {
@@ -39,8 +44,34 @@ void MainShip::handleControls() {
     this->moveControls->handleControls(this->controls, this);
 }
 
+void MainShip::checkColisions(CleytinEngine *engine) {
+    if(this->onMainShipDestroyed == NULL) {
+        return;
+    }
+
+    std::vector<size_t> *r = engine->getCollisionsOn(this);
+    bool destroyed = false;
+    for (size_t i = 0; i < r->size(); i++)
+    {
+        CEGraphicObject *obj = engine->getObjectAt(r->at(i));
+        DefaultMeteor *meteor = dynamic_cast<DefaultMeteor *>(obj);
+        if(meteor == NULL) {
+            continue;
+        }
+        // Aconteceu uma colisão com um meteoro
+        destroyed = true;
+        break;
+    }
+
+    delete r;
+    if(destroyed) {
+        this->onMainShipDestroyed();
+    }
+}
+
 void MainShip::loop(CleytinEngine *engine) {
     this->handleControls();
+    this->checkColisions(engine);
 }
 
 bool MainShip::fire() {

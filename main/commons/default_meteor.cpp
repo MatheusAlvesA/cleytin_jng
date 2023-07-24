@@ -1,5 +1,9 @@
 #include "default_meteor.h"
 
+void DefaultMeteor::setOnDestroyed(std::function<void()> callback) {
+    this->onDestroyed = callback;
+}
+
 void DefaultMeteor::setup(CleytinEngine *engine) {
     this->setBuffer(sprite_color_meteor_01);
     this->setHeight(40);
@@ -18,10 +22,44 @@ void DefaultMeteor::loop(CleytinEngine *engine) {
         return;
     }
     if(this->animation->isFinished()) {
-        delete this->animation;
-        this->animation = NULL;
-        engine->markToDelete(this);
+        this->despawn(engine);
         return;
     }
     this->animation->loop();
+    this->checkColisions(engine);
+}
+
+void DefaultMeteor::checkColisions(CleytinEngine *engine) {
+    if(this->onDestroyed == NULL) {
+        return;
+    }
+
+    std::vector<size_t> *r = engine->getCollisionsOn(this);
+    bool destroyed = false;
+    for (size_t i = 0; i < r->size(); i++)
+    {
+        CEGraphicObject *obj = engine->getObjectAt(r->at(i));
+        MainLaserBeam *laser = dynamic_cast<MainLaserBeam *>(obj);
+        if(laser == NULL) {
+            continue;
+        }
+        // Aconteceu uma colisão com um tiro
+        destroyed = true;
+        engine->markToDelete(laser);
+        break;
+    }
+
+    delete r;
+    if(destroyed) {
+        this->despawn(engine);
+        this->onDestroyed();
+    }
+}
+
+void DefaultMeteor::despawn(CleytinEngine *engine) {
+    if(this->animation != NULL) {
+        delete this->animation;
+        this->animation = NULL;
+    }
+    engine->markToDelete(this);
 }

@@ -7,14 +7,20 @@
 #include "cleytin_controls.h"
 #include "ce_move_controls.h"
 #include "ce_linear_move_animation.h"
+#include "main_laser_beam.h"
+#include <functional>
 
 class DefaultMeteor : public CEColorfulBitmap {
 public:
     void setup(CleytinEngine *engine);
     void loop(CleytinEngine *engine);
+    void setOnDestroyed(std::function<void()> callback);
+    void checkColisions(CleytinEngine *engine);
+    void despawn(CleytinEngine *engine);
 
 private:
     CELinearMoveAnimation *animation;
+    std::function<void()> onDestroyed = NULL;
 };
 
 #endif

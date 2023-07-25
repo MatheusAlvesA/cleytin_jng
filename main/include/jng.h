@@ -9,6 +9,7 @@
 #include "cleytin_controls.h"
 #include "default_meteor.h"
 #include "ce_text.h"
+#include "cleytin_audio.h"
 #include <string>
 
 #define METEOR_SPAWN_INTERVAL 1000

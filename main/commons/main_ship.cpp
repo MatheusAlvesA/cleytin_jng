@@ -8,6 +8,7 @@ MainShip::MainShip() {
     this->moveControls = new CEMoveControls();
     this->moveControls->setPixelsPerSecond(100);
     this->onMainShipDestroyed = NULL;
+    this->audioInterface = NULL;
 }
 
 MainShip::~MainShip() {
@@ -30,6 +31,10 @@ void MainShip::setup(CleytinEngine *engine) {
 
 void MainShip::setControls(CleytinControls *controls) {
     this->controls = controls;
+}
+
+void MainShip::setAudioInterface(CleytinAudio *interface) {
+    this->audioInterface = interface;
 }
 
 void MainShip::handleControls() {
@@ -87,6 +92,10 @@ bool MainShip::fire() {
     MainLaserBeam *laserBeam = new MainLaserBeam();
     laserBeam->setPos(this->getPosX() + 14, this->getPosY() - 22);
     this->engine->addObject(laserBeam);
+
+    if(this->audioInterface != NULL) {
+        this->audioInterface->playWav(wav_bin_laser_default);
+    }
 
     return true;
 }

@@ -3,10 +3,13 @@
 void JNG::run(CleytinEngine *engine) {
     CleytinControls *controls = new CleytinControls();
     controls->init();
+    CleytinAudio *audio = new CleytinAudio();
+    audio->init();
 
     while(1) {
         MainShip *mainShip = new MainShip();
         mainShip->setControls(controls);
+        mainShip->setAudioInterface(audio);
         mainShip->setOnMainShipDestroyed([&](){
             this->onMainShipDestroyed();
         });

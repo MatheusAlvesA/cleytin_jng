@@ -16,6 +16,7 @@
 
 class JNG {
 public:
+    JNG();
     void run(CleytinEngine *engine);
     void onMeteorDestroyed();
     void onMainShipDestroyed();
@@ -24,10 +25,10 @@ public:
 
 private:
     void spawnMeteor(CleytinEngine *engine);
-    uint64_t lastMeteorSpawn = 0;
-    unsigned int score = 0;
-    bool mainShipDestroyed = false;
-    CEText *scoreText = NULL;
+    uint64_t lastMeteorSpawn;
+    unsigned int score;
+    bool mainShipDestroyed;
+    CEText *scoreText;
 };
 
 #endif

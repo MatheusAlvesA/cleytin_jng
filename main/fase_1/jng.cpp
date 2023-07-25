@@ -1,5 +1,12 @@
 #include "jng.h"
 
+JNG::JNG() {
+    this->scoreText = NULL;
+    this->lastMeteorSpawn = 0;
+    this->score = 0;
+    this->mainShipDestroyed = false;
+}
+
 void JNG::run(CleytinEngine *engine) {
     CleytinControls *controls = new CleytinControls();
     controls->init();
@@ -65,6 +72,7 @@ void JNG::gameOver(CleytinEngine *engine, CleytinControls *controls) {
     }
 
     engine->clear(true);
+    this->scoreText = NULL;
     engine->render();
 
     this->mainShipDestroyed = false;

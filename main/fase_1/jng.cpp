@@ -15,6 +15,11 @@ void JNG::run(CleytinEngine *engine) {
     this->audioInterface->init();
     this->engine = engine;
 
+    CleytinAudio *audio = NULL;
+    this->audioInterface->createAudio(wav_bin_musica_fundo, &audio);
+    audio->setLoop(true);
+    audio->play();
+
     while(1) {
         MainShip *mainShip = new MainShip();
         mainShip->setControls(controls);

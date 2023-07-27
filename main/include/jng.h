@@ -20,8 +20,8 @@ public:
     void run(CleytinEngine *engine);
     void onMeteorDestroyed();
     void onMainShipDestroyed();
-    void updateScoreDisplay(CleytinEngine *engine);
-    void gameOver(CleytinEngine *engine, CleytinControls *controls);
+    void updateScoreDisplay();
+    void gameOver(CleytinControls *controls);
 
 private:
     void spawnMeteor(CleytinEngine *engine);
@@ -30,6 +30,7 @@ private:
     bool mainShipDestroyed;
     CEText *scoreText;
     CleytinAudioEngine *audioInterface;
+    CleytinEngine *engine;
 };
 
 #endif

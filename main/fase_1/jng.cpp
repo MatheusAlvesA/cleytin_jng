@@ -27,19 +27,29 @@ void JNG::run(CleytinEngine *engine) {
         uint64_t start = esp_timer_get_time();
         uint64_t sum = 0;
         uint64_t n = 0;
+        uint64_t loopTime = 0;
+        uint64_t renderTime = 0;
         this->updateScoreDisplay();
         while(!this->mainShipDestroyed) {
             uint64_t startLoop = esp_timer_get_time();
             this->spawnMeteor(engine);
-            engine->loop();
-            engine->render();
+            loopTime += engine->loop();
+            renderTime += engine->render();
             n++;
             sum = sum + (esp_timer_get_time() - startLoop);
             if((esp_timer_get_time() - start) > 500 * 1000) {
-                printf("FPS: %llu | Objects: %u\n", n * 2, engine->getObjectsCount());
+                printf(
+                    "FPS: %llu | Objects: %u | loop time: %llu | render time: %llu\n",
+                    n * 2,
+                    engine->getObjectsCount(),
+                    (loopTime / 1000) / n,
+                    (renderTime / 1000) / n
+                );
                 start = esp_timer_get_time();
                 sum = 0;
                 n = 0;
+                loopTime = 0;
+                renderTime = 0;
             }
         }
         this->gameOver(controls);

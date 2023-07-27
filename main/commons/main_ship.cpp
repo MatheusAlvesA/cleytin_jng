@@ -33,7 +33,7 @@ void MainShip::setControls(CleytinControls *controls) {
     this->controls = controls;
 }
 
-void MainShip::setAudioInterface(CleytinAudio *interface) {
+void MainShip::setAudioInterface(CleytinAudioEngine *interface) {
     this->audioInterface = interface;
 }
 
@@ -94,7 +94,7 @@ bool MainShip::fire() {
     this->engine->addObject(laserBeam);
 
     if(this->audioInterface != NULL) {
-        this->audioInterface->playWav(wav_bin_laser_default);
+        this->audioInterface->playOnce(wav_bin_laser_default);
     }
 
     return true;

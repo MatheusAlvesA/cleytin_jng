@@ -8,7 +8,7 @@
 #include "ce_move_controls.h"
 #include "main_laser_beam.h"
 #include "default_meteor.h"
-#include "cleytin_audio.h"
+#include "cleytin_audio_engine.h"
 #include "audios.h"
 #include <functional>
 
@@ -19,14 +19,14 @@ public:
     void setup(CleytinEngine *engine);
     void loop(CleytinEngine *engine);
     void setControls(CleytinControls *controls);
-    void setAudioInterface(CleytinAudio *interface);
+    void setAudioInterface(CleytinAudioEngine *interface);
     void setOnMainShipDestroyed(std::function<void()> callback);
 
 private:
     CleytinEngine *engine;
     CleytinControls *controls;
     CEMoveControls *moveControls;
-    CleytinAudio *audioInterface;
+    CleytinAudioEngine *audioInterface;
     void handleControls();
     void checkColisions(CleytinEngine *engine);
     bool fire();

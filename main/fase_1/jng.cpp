@@ -5,18 +5,19 @@ JNG::JNG() {
     this->lastMeteorSpawn = 0;
     this->score = 0;
     this->mainShipDestroyed = false;
+    this->audioInterface = NULL;
 }
 
 void JNG::run(CleytinEngine *engine) {
     CleytinControls *controls = new CleytinControls();
     controls->init();
-    CleytinAudio *audio = new CleytinAudio();
-    audio->init();
+    this->audioInterface = new CleytinAudioEngine();
+    this->audioInterface->init();
 
     while(1) {
         MainShip *mainShip = new MainShip();
         mainShip->setControls(controls);
-        mainShip->setAudioInterface(audio);
+        mainShip->setAudioInterface(this->audioInterface);
         mainShip->setOnMainShipDestroyed([&](){
             this->onMainShipDestroyed();
         });
@@ -54,6 +55,7 @@ void JNG::onMeteorDestroyed() {
 
 void JNG::onMainShipDestroyed() {
     this->mainShipDestroyed = true;
+    delete this->audioInterface;
 }
 
 void JNG::gameOver(CleytinEngine *engine, CleytinControls *controls) {

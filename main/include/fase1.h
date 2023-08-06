@@ -13,24 +13,24 @@
 #include <string>
 
 #define METEOR_SPAWN_INTERVAL 2000
+#define SCORE_TO_PASS 20
 
-class JNG {
+class FASE1 {
 public:
-    JNG();
-    void run(CleytinEngine *engine);
+    FASE1();
+    bool run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine);
     void onMeteorDestroyed();
     void onMainShipDestroyed();
     void updateScoreDisplay();
     void gameOver(CleytinControls *controls);
 
 private:
-    void spawnMeteor(CleytinEngine *engine);
-    void setupBackground(CleytinEngine *engine);
+    void spawnMeteor();
+    void setupBackground();
     uint64_t lastMeteorSpawn;
     unsigned int score;
     bool mainShipDestroyed;
     CEText *scoreText;
-    CleytinAudioEngine *audioInterface;
     CleytinEngine *engine;
 };
 

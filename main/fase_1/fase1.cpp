@@ -1,30 +1,25 @@
-#include "jng.h"
+#include "fase1.h"
 
-JNG::JNG() {
+FASE1::FASE1() {
     this->scoreText = NULL;
     this->lastMeteorSpawn = 0;
     this->score = 0;
     this->mainShipDestroyed = false;
-    this->audioInterface = NULL;
 }
 
-void JNG::run(CleytinEngine *engine) {
-    CleytinControls *controls = new CleytinControls();
-    controls->init();
-    this->audioInterface = new CleytinAudioEngine();
-    this->audioInterface->init();
+bool FASE1::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine) {
     this->engine = engine;
 
     CleytinAudio *audio = NULL;
-    this->audioInterface->createAudio(wav_bin_musica_fundo, &audio);
+    audioEngine->createAudio(wav_bin_musica_fundo, &audio);
     audio->setLoop(true);
     audio->play();
 
-    while(1) {
-        this->setupBackground(engine);
+    while(this->score < SCORE_TO_PASS) {
+        this->setupBackground();
         MainShip *mainShip = new MainShip();
         mainShip->setControls(controls);
-        mainShip->setAudioInterface(this->audioInterface);
+        mainShip->setAudioInterface(audioEngine);
         mainShip->setOnMainShipDestroyed([&](){
             this->onMainShipDestroyed();
         });
@@ -36,9 +31,9 @@ void JNG::run(CleytinEngine *engine) {
         uint64_t loopTime = 0;
         uint64_t renderTime = 0;
         this->updateScoreDisplay();
-        while(!this->mainShipDestroyed) {
+        while(!this->mainShipDestroyed && this->score < SCORE_TO_PASS) {
             uint64_t startLoop = esp_timer_get_time();
-            this->spawnMeteor(engine);
+            this->spawnMeteor();
             loopTime += engine->loop();
             renderTime += engine->render();
             n++;
@@ -58,11 +53,16 @@ void JNG::run(CleytinEngine *engine) {
                 renderTime = 0;
             }
         }
-        this->gameOver(controls);
+        if(this->score < SCORE_TO_PASS) {
+            this->gameOver(controls);
+        }
     }
+    engine->clear(true);
+    audioEngine->clear();
+    return false;
 }
 
-void JNG::spawnMeteor(CleytinEngine *engine) {
+void FASE1::spawnMeteor() {
     uint64_t elapsed_time_ms = (esp_timer_get_time() - this->lastMeteorSpawn) / 1000;
 
     if(elapsed_time_ms < METEOR_SPAWN_INTERVAL) {
@@ -74,20 +74,20 @@ void JNG::spawnMeteor(CleytinEngine *engine) {
     meteor->setOnDestroyed([&](){
         this->onMeteorDestroyed();
     });
-    engine->addObject(meteor);
+    this->engine->addObject(meteor);
     this->lastMeteorSpawn = esp_timer_get_time();
 }
 
-void JNG::onMeteorDestroyed() {
+void FASE1::onMeteorDestroyed() {
     this->score = this->score + 1;
     this->updateScoreDisplay();
 }
 
-void JNG::onMainShipDestroyed() {
+void FASE1::onMainShipDestroyed() {
     this->mainShipDestroyed = true;
 }
 
-void JNG::gameOver(CleytinControls *controls) {
+void FASE1::gameOver(CleytinControls *controls) {
     this->engine->clear(true);
     this->engine->render();
 
@@ -110,7 +110,7 @@ void JNG::gameOver(CleytinControls *controls) {
     this->score = 0;
 }
 
-void JNG::updateScoreDisplay() {
+void FASE1::updateScoreDisplay() {
     if(this->scoreText == NULL) {
         this->scoreText = new CEText();
         this->scoreText->setBaseColor({255, 0, 255});
@@ -125,12 +125,12 @@ void JNG::updateScoreDisplay() {
     this->scoreText->setText(s.c_str());
 }
 
-void JNG::setupBackground(CleytinEngine *engine) {
+void FASE1::setupBackground() {
     CEColorfulBitmap *bitmap = new CEColorfulBitmap();
     bitmap->setBuffer(sprite_color_bg_01);
     bitmap->setHeight(240);
     bitmap->setWidth(320);
     bitmap->setAlphaColor(0x0);
     bitmap->setColisionEnabled(false);
-    engine->addObject(bitmap);
+    this->engine->addObject(bitmap);
 }

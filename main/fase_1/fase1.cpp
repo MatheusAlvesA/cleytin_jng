@@ -132,5 +132,6 @@ void FASE1::setupBackground() {
     bitmap->setWidth(320);
     bitmap->setAlphaColor(0x0);
     bitmap->setColisionEnabled(false);
+    bitmap->setHasTransparency(false);
     this->engine->addObject(bitmap);
 }

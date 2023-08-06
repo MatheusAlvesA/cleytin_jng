@@ -6,9 +6,9 @@ void DefaultMeteor::setOnDestroyed(std::function<void()> callback) {
 
 void DefaultMeteor::setup(CleytinEngine *engine) {
     this->setBuffer(sprite_color_meteor_01);
-    this->setHeight(40);
-    this->setWidth(40);
-    this->setAlphaColor(0x0);
+    this->setHeight(63);
+    this->setWidth(75);
+    this->setAlphaColor(0xF8);
     this->animation = new CELinearMoveAnimation();
     this->animation->setObject(this);
     this->animation->setDuration(2000);

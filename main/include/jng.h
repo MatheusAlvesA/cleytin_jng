@@ -12,7 +12,7 @@
 #include "cleytin_audio_engine.h"
 #include <string>
 
-#define METEOR_SPAWN_INTERVAL 1000
+#define METEOR_SPAWN_INTERVAL 1500
 
 class JNG {
 public:

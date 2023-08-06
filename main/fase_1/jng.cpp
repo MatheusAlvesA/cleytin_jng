@@ -69,7 +69,7 @@ void JNG::spawnMeteor(CleytinEngine *engine) {
     }
 
     DefaultMeteor *meteor = new DefaultMeteor();
-    meteor->setPos(rand() % 280, 0);
+    meteor->setPos(rand() % 245, 0);
     meteor->setOnDestroyed([&](){
         this->onMeteorDestroyed();
     });

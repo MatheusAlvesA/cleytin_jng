@@ -21,6 +21,7 @@ void JNG::run(CleytinEngine *engine) {
     audio->play();
 
     while(1) {
+        this->setupBackground(engine);
         MainShip *mainShip = new MainShip();
         mainShip->setControls(controls);
         mainShip->setAudioInterface(this->audioInterface);
@@ -122,4 +123,14 @@ void JNG::updateScoreDisplay() {
 
     std::string s = std::to_string(this->score);
     this->scoreText->setText(s.c_str());
+}
+
+void JNG::setupBackground(CleytinEngine *engine) {
+    CEColorfulBitmap *bitmap = new CEColorfulBitmap();
+    bitmap->setBuffer(sprite_color_bg_01);
+    bitmap->setHeight(240);
+    bitmap->setWidth(320);
+    bitmap->setAlphaColor(0x0);
+    bitmap->setColisionEnabled(false);
+    engine->addObject(bitmap);
 }

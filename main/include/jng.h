@@ -2,17 +2,17 @@
 #define FASE_1_JNG
 
 #include "cleytin_engine.h"
+#include "sprites.h"
 #include "ce_text.h"
 #include "ce_container.h"
 #include "ce_colorful_bitmap.h"
 #include "main_ship.h"
 #include "cleytin_controls.h"
 #include "default_meteor.h"
-#include "ce_text.h"
 #include "cleytin_audio_engine.h"
 #include <string>
 
-#define METEOR_SPAWN_INTERVAL 1500
+#define METEOR_SPAWN_INTERVAL 2000
 
 class JNG {
 public:
@@ -25,6 +25,7 @@ public:
 
 private:
     void spawnMeteor(CleytinEngine *engine);
+    void setupBackground(CleytinEngine *engine);
     uint64_t lastMeteorSpawn;
     unsigned int score;
     bool mainShipDestroyed;

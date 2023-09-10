@@ -22,16 +22,19 @@ public:
     void onMeteorDestroyed();
     void onMainShipDestroyed();
     void updateScoreDisplay();
-    void gameOver(CleytinControls *controls);
+    void gameOver();
 
 private:
     void spawnMeteor();
-    void setupBackground();
+    void setupBackground(bool withScore);
+    void setupMainShip();
     uint64_t lastMeteorSpawn;
     unsigned int score;
     bool mainShipDestroyed;
     CEText *scoreText;
     CleytinEngine *engine;
+    CleytinAudioEngine *audioEngine;
+    CleytinControls *controls;
 };
 
 #endif

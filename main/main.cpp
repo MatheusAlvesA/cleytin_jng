@@ -14,7 +14,12 @@ void app_main(void)
     audioEngine->init();
 
     FASE1 *fase1 = new FASE1();
-    while(fase1->run(engine, controls, audioEngine));
+    while(1) {
+        engine->clear(true);
+        audioEngine->clear();
+        bool restart = fase1->run(engine, controls, audioEngine);
+        if(restart) continue;
+    }
     delete fase1;
 }
 

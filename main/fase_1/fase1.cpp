@@ -9,54 +9,51 @@ FASE1::FASE1() {
 
 bool FASE1::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine) {
     this->engine = engine;
+    this->audioEngine = audioEngine;
+    this->controls = controls;
 
     CleytinAudio *audio = NULL;
-    audioEngine->createAudio(wav_bin_musica_fundo, &audio);
+    this->audioEngine->createAudio(wav_bin_musica_fundo, &audio);
     audio->setLoop(true);
     audio->play();
 
-    while(this->score < SCORE_TO_PASS) {
-        this->setupBackground();
-        MainShip *mainShip = new MainShip();
-        mainShip->setControls(controls);
-        mainShip->setAudioInterface(audioEngine);
-        mainShip->setOnMainShipDestroyed([&](){
-            this->onMainShipDestroyed();
-        });
-        engine->addObject(mainShip);
+    this->setupBackground(true);
+    this->setupMainShip();
 
-        uint64_t start = esp_timer_get_time();
-        uint64_t sum = 0;
-        uint64_t n = 0;
-        uint64_t loopTime = 0;
-        uint64_t renderTime = 0;
-        this->updateScoreDisplay();
-        while(!this->mainShipDestroyed && this->score < SCORE_TO_PASS) {
-            uint64_t startLoop = esp_timer_get_time();
-            this->spawnMeteor();
-            loopTime += engine->loop();
-            renderTime += engine->render();
-            n++;
-            sum = sum + (esp_timer_get_time() - startLoop);
-            if((esp_timer_get_time() - start) > 500 * 1000) {
-                printf(
-                    "FPS: %llu | Objects: %u | loop time: %llu | render time: %llu\n",
-                    n * 2,
-                    engine->getObjectsCount(),
-                    (loopTime / 1000) / n,
-                    (renderTime / 1000) / n
-                );
-                start = esp_timer_get_time();
-                sum = 0;
-                n = 0;
-                loopTime = 0;
-                renderTime = 0;
-            }
-        }
-        if(this->score < SCORE_TO_PASS) {
-            this->gameOver(controls);
+    uint64_t start = esp_timer_get_time();
+    uint64_t sum = 0;
+    uint64_t n = 0;
+    uint64_t loopTime = 0;
+    uint64_t renderTime = 0;
+    this->updateScoreDisplay();
+    while(!this->mainShipDestroyed && this->score < SCORE_TO_PASS) {
+        uint64_t startLoop = esp_timer_get_time();
+        this->spawnMeteor();
+        loopTime += engine->loop();
+        renderTime += engine->render();
+        n++;
+        sum = sum + (esp_timer_get_time() - startLoop);
+        if((esp_timer_get_time() - start) > 500 * 1000) {
+            printf(
+                "FPS: %llu | Objects: %u | loop time: %llu | render time: %llu\n",
+                n * 2,
+                engine->getObjectsCount(),
+                (loopTime / 1000) / n,
+                (renderTime / 1000) / n
+            );
+            start = esp_timer_get_time();
+            sum = 0;
+            n = 0;
+            loopTime = 0;
+            renderTime = 0;
         }
     }
+
+    if(this->mainShipDestroyed) {
+        this->gameOver();
+        return true;
+    }
+
     engine->clear(true);
     audioEngine->clear();
     return false;
@@ -87,9 +84,10 @@ void FASE1::onMainShipDestroyed() {
     this->mainShipDestroyed = true;
 }
 
-void FASE1::gameOver(CleytinControls *controls) {
+void FASE1::gameOver() {
     this->engine->clear(true);
     this->engine->render();
+    this->setupBackground(false);
 
     CEText *text = new CEText();
     text->setText("GAME OVER");
@@ -98,7 +96,7 @@ void FASE1::gameOver(CleytinControls *controls) {
     text->setPos(50, 100);
     this->engine->addObject(text);
 
-    while(!controls->getStart()) {
+    while(!this->controls->getStart()) {
         this->engine->render();
     }
 
@@ -125,13 +123,32 @@ void FASE1::updateScoreDisplay() {
     this->scoreText->setText(s.c_str());
 }
 
-void FASE1::setupBackground() {
+void FASE1::setupBackground(bool withScore) {
     CEColorfulBitmap *bitmap = new CEColorfulBitmap();
     bitmap->setBuffer(sprite_color_bg_01);
     bitmap->setHeight(240);
     bitmap->setWidth(320);
-    bitmap->setAlphaColor(0x0);
     bitmap->setColisionEnabled(false);
     bitmap->setHasTransparency(false);
     this->engine->addObject(bitmap);
+
+    if(!withScore) return;
+    bitmap = new CEColorfulBitmap();
+    bitmap->setBuffer(sprite_color_score_bg);
+    bitmap->setHeight(34);
+    bitmap->setWidth(66);
+    bitmap->setAlphaColor(0xFFFF);
+    bitmap->setPos(4, 3);
+    bitmap->setColisionEnabled(false);
+    this->engine->addObject(bitmap);
+}
+
+void FASE1::setupMainShip() {
+    MainShip *mainShip = new MainShip();
+    mainShip->setControls(this->controls);
+    mainShip->setAudioInterface(this->audioEngine);
+    mainShip->setOnMainShipDestroyed([&](){
+        this->onMainShipDestroyed();
+    });
+    this->engine->addObject(mainShip);
 }

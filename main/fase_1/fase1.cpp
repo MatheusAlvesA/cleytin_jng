@@ -108,7 +108,7 @@ void FASE1::opening() {
     text->setText("20 meteoros\npara passar");
     text->setBaseColor({255, 255, 255});
     text->setSizeMultiplier(3);
-    text->setPos(50, 100);
+    text->setPos(25, 80);
     text->setPriority(2);
     this->engine->addObject(text);
 

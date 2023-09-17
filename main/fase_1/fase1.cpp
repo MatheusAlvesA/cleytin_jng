@@ -12,6 +12,8 @@ bool FASE1::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEn
     this->audioEngine = audioEngine;
     this->controls = controls;
 
+    this->opening();
+
     CleytinAudio *audio = NULL;
     this->audioEngine->createAudio(wav_bin_musica_fundo, &audio);
     audio->setLoop(true);
@@ -50,13 +52,22 @@ bool FASE1::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEn
     }
 
     if(this->mainShipDestroyed) {
+        this->clean();
         this->gameOver();
         return true;
     }
 
-    engine->clear(true);
-    audioEngine->clear();
+    this->clean();
     return false;
+}
+
+void FASE1::clean() {
+    this->engine->clear(true);
+    this->audioEngine->clear();
+    this->scoreText = NULL;
+    this->mainShipDestroyed = false;
+    this->score = 0;
+    this->lastMeteorSpawn = 0;
 }
 
 void FASE1::spawnMeteor() {
@@ -84,9 +95,30 @@ void FASE1::onMainShipDestroyed() {
     this->mainShipDestroyed = true;
 }
 
-void FASE1::gameOver() {
-    this->engine->clear(true);
+void FASE1::opening() {
+    CERectangle *rect = new CERectangle();
+    rect->setBaseColor({0, 0, 0});
+    rect->setHeight(240);
+    rect->setWidth(320);
+    rect->setPos(0, 0);
+    rect->setFilled(true);
+    this->engine->addObject(rect);
+
+    CEText *text = new CEText();
+    text->setText("20 meteoros\npara passar");
+    text->setBaseColor({255, 255, 255});
+    text->setSizeMultiplier(3);
+    text->setPos(50, 100);
+    text->setPriority(2);
+    this->engine->addObject(text);
+
     this->engine->render();
+    cleytin_delay(3000);
+
+    this->engine->clear(true);
+}
+
+void FASE1::gameOver() {
     this->setupBackground(false);
 
     CEText *text = new CEText();
@@ -101,11 +133,6 @@ void FASE1::gameOver() {
     }
 
     this->engine->clear(true);
-    this->scoreText = NULL;
-    this->engine->render();
-
-    this->mainShipDestroyed = false;
-    this->score = 0;
 }
 
 void FASE1::updateScoreDisplay() {

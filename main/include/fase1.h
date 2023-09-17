@@ -10,9 +10,10 @@
 #include "cleytin_controls.h"
 #include "default_meteor.h"
 #include "cleytin_audio_engine.h"
+#include "ce_rectangle.h"
 #include <string>
 
-#define METEOR_SPAWN_INTERVAL 2000
+#define METEOR_SPAWN_INTERVAL 1500
 #define SCORE_TO_PASS 20
 
 class FASE1 {
@@ -28,6 +29,8 @@ private:
     void spawnMeteor();
     void setupBackground(bool withScore);
     void setupMainShip();
+    void clean();
+    void opening();
     uint64_t lastMeteorSpawn;
     unsigned int score;
     bool mainShipDestroyed;

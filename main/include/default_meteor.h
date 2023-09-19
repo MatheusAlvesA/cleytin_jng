@@ -12,6 +12,8 @@
 
 class DefaultMeteor : public CEColorfulBitmap {
 public:
+    DefaultMeteor();
+    ~DefaultMeteor();
     void setup(CleytinEngine *engine);
     void loop(CleytinEngine *engine);
     void setOnDestroyed(std::function<void()> callback);

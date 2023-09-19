@@ -1,5 +1,17 @@
 #include "default_meteor.h"
 
+DefaultMeteor::DefaultMeteor() {
+    this->animation = NULL;
+    this->onDestroyed = NULL;
+}
+
+DefaultMeteor::~DefaultMeteor() {
+    if(this->animation != NULL) {
+        delete this->animation;
+        this->animation = NULL;
+    }
+}
+
 void DefaultMeteor::setOnDestroyed(std::function<void()> callback) {
     this->onDestroyed = callback;
 }

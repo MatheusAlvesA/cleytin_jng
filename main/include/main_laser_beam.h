@@ -10,6 +10,8 @@
 
 class MainLaserBeam : public CEColorfulBitmap {
 public:
+    MainLaserBeam();
+    ~MainLaserBeam();
     void setup(CleytinEngine *engine);
     void loop(CleytinEngine *engine);
 

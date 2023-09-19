@@ -1,5 +1,16 @@
 #include "main_laser_beam.h"
 
+MainLaserBeam::MainLaserBeam() {
+    this->animation = NULL;
+}
+
+MainLaserBeam::~MainLaserBeam() {
+    if(this->animation != NULL) {
+        delete this->animation;
+        this->animation = NULL;
+    }
+}
+
 void MainLaserBeam::setup(CleytinEngine *engine) {
     this->setBuffer(sprite_color_green_laser_beam);
     this->setHeight(22);

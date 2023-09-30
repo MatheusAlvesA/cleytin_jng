@@ -19,7 +19,7 @@ void app_main(void)
     while(1) {
         engine->clear(true);
         audioEngine->clear();
-        if(fase1->run(engine, controls, audioEngine)) continue;
+        //if(fase1->run(engine, controls, audioEngine)) continue;
 
         engine->clear(true);
         audioEngine->clear();

@@ -5,6 +5,7 @@ FASE2::FASE2() {
     this->lastEnemySpawn = 0;
     this->score = 0;
     this->mainShipDestroyed = false;
+    this->enemiesSpawned = 0;
 }
 
 bool FASE2::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine) {
@@ -68,22 +69,28 @@ void FASE2::clean() {
     this->mainShipDestroyed = false;
     this->score = 0;
     this->lastEnemySpawn = 0;
+    this->enemiesSpawned = 0;
 }
 
 void FASE2::spawnEnemy() {
-    uint64_t elapsed_time_ms = (esp_timer_get_time() - this->lastEnemySpawn) / 1000;
+    int enemiesOnScreen = this->enemiesSpawned - this->score;
+    if(this->enemiesSpawned >= FASE_2_SCORE_TO_PASS || enemiesOnScreen >= 3) {
+        return;
+    }
 
+    uint64_t elapsed_time_ms = (esp_timer_get_time() - this->lastEnemySpawn) / 1000;
     if(elapsed_time_ms < FASE_2_ENEMY_SPAWN_INTERVAL) {
         return;
     }
 
-    // DefaultMeteor *enemy = new DefaultMeteor();
-    // enemy->setPos(rand() % 245, 0);
-    // enemy->setOnDestroyed([&](){
-    //     this->onEnemyDestroyed();
-    // });
-    // this->engine->addObject(enemy);
-    // this->lastEnemySpawn = esp_timer_get_time();
+    EnemyShip *enemy = new EnemyShip(this->enemiesSpawned);
+    enemy->setPos(rand() % 245, 0);
+    enemy->setOnShipDestroyed([&](){
+        this->onEnemyDestroyed();
+    });
+    this->engine->addObject(enemy);
+    this->lastEnemySpawn = esp_timer_get_time();
+    this->enemiesSpawned++;
 }
 
 void FASE2::onEnemyDestroyed() {

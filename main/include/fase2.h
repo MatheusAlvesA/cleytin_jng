@@ -10,6 +10,7 @@
 #include "cleytin_controls.h"
 #include "cleytin_audio_engine.h"
 #include "ce_rectangle.h"
+#include "enemy_ship.h"
 #include <string>
 
 #define FASE_2_ENEMY_SPAWN_INTERVAL 3000
@@ -30,6 +31,7 @@ private:
     void setupMainShip();
     void clean();
     void opening();
+    unsigned int enemiesSpawned;
     uint64_t lastEnemySpawn;
     unsigned int score;
     bool mainShipDestroyed;

@@ -17,7 +17,7 @@ public:
     void setup(CleytinEngine *engine);
     void loop(CleytinEngine *engine);
     void setOnDestroyed(std::function<void()> callback);
-    void checkColisions(CleytinEngine *engine);
+    bool checkColisions(CleytinEngine *engine);
     void despawn(CleytinEngine *engine);
 
 private:

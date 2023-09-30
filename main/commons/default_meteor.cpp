@@ -37,13 +37,15 @@ void DefaultMeteor::loop(CleytinEngine *engine) {
         this->despawn(engine);
         return;
     }
+    if(this->checkColisions(engine)) {
+        return;
+    }
     this->animation->loop();
-    this->checkColisions(engine);
 }
 
-void DefaultMeteor::checkColisions(CleytinEngine *engine) {
+bool DefaultMeteor::checkColisions(CleytinEngine *engine) {
     if(this->onDestroyed == NULL) {
-        return;
+        return false;
     }
 
     std::vector<size_t> *r = engine->getCollisionsOn(this);
@@ -66,6 +68,7 @@ void DefaultMeteor::checkColisions(CleytinEngine *engine) {
         this->despawn(engine);
         this->onDestroyed();
     }
+    return destroyed;
 }
 
 void DefaultMeteor::despawn(CleytinEngine *engine) {

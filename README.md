@@ -5,7 +5,7 @@ Este projeto é um jogo de nave simples, como prova de conceito para o console C
 
 # Créditos
 
-[Sprinte de meteoro: FunwithPixels](https://opengameart.org/content/brown-asteroid)
-[Naves: Irmandito](https://opengameart.org/content/spaceships-32x32)
-[Backgrounds: Deepfold](https://deep-fold.itch.io/space-background-generator)
-[Background do score](https://opengameart.org/content/golden-ui)
+[Sprinte de meteoro: FunwithPixels](https://opengameart.org/content/brown-asteroid)  
+[Naves: Irmandito](https://opengameart.org/content/spaceships-32x32)  
+[Backgrounds: Deepfold](https://deep-fold.itch.io/space-background-generator)  
+[Background do score: Buch](https://opengameart.org/content/golden-ui)  

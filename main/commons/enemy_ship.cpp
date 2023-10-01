@@ -1,23 +1,30 @@
 #include "enemy_ship.h"
 
-EnemyShip::EnemyShip(unsigned int id) {
+EnemyShip::EnemyShip(unsigned int id)
+{
     this->engine = NULL;
+    this->animation = NULL;
     this->lastFire = 0;
     this->fireRate = 500;
     this->onShipDestroyed = NULL;
     this->id = id;
 }
 
-EnemyShip::~EnemyShip() {
-    // EMPTY
+EnemyShip::~EnemyShip()
+{
+    if (this->animation != NULL)
+        delete this->animation;
 }
 
-void EnemyShip::setOnShipDestroyed(std::function<void()> callback) {
+void EnemyShip::setOnShipDestroyed(std::function<void()> callback)
+{
     this->onShipDestroyed = callback;
 }
 
-void EnemyShip::setup(CleytinEngine *engine) {
-    switch (this->id) {
+void EnemyShip::setup(CleytinEngine *engine)
+{
+    switch (this->id)
+    {
     case 0:
         this->setBuffer(sprite_color_ship_01);
         break;
@@ -41,10 +48,13 @@ void EnemyShip::setup(CleytinEngine *engine) {
     this->setPos(144, this->id * 32);
     this->setPriority(9);
     this->engine = engine;
+    this->prepareAnimation();
 }
 
-void EnemyShip::checkColisions() {
-    if(this->onShipDestroyed == NULL) {
+void EnemyShip::checkColisions()
+{
+    if (this->onShipDestroyed == NULL)
+    {
         return;
     }
 
@@ -54,7 +64,8 @@ void EnemyShip::checkColisions() {
     {
         CEGraphicObject *obj = engine->getObjectAt(r->at(i));
         MainLaserBeam *laser = dynamic_cast<MainLaserBeam *>(obj);
-        if(laser == NULL) {
+        if (laser == NULL)
+        {
             continue;
         }
         // Aconteceu uma colisão com um laser
@@ -63,22 +74,57 @@ void EnemyShip::checkColisions() {
     }
 
     delete r;
-    if(destroyed) {
+    if (destroyed)
+    {
         this->engine->markToDelete(this);
         this->onShipDestroyed();
     }
 }
 
-void EnemyShip::loop(CleytinEngine *engine) {
+void EnemyShip::loop(CleytinEngine *engine)
+{
     this->checkColisions();
+    if (this->animation != NULL)
+        this->animation->loop();
 }
 
-bool EnemyShip::fire() {
-    if(this->engine == NULL) {
+void EnemyShip::prepareAnimation()
+{
+    if (this->animation != NULL)
+        delete this->animation;
+    this->animation = new CEMultiLinearMoveAnimation();
+    this->animation->setObject(this);
+    this->animation->setDuration(5000);
+    std::vector<CELine *> *steps = new std::vector<CELine *>();
+    switch (this->id)
+    {
+    case 0:
+        steps->push_back(new CELine({20, 0}, {200, 0}));
+        break;
+    case 1:
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    default:
+        steps->push_back(new CELine({20, 0}, {200, 0}));
+        break;
+    }
+    this->animation->setSteps(steps);
+    delete_pointers_vector<CELine>(steps);
+    this->animation->start();
+}
+
+bool EnemyShip::fire()
+{
+    if (this->engine == NULL)
+    {
         return false;
     }
     uint64_t elapsed = esp_timer_get_time() - this->lastFire;
-    if(elapsed < this->fireRate * 1000) {
+    if (elapsed < this->fireRate * 1000)
+    {
         return false;
     }
     this->lastFire = esp_timer_get_time();

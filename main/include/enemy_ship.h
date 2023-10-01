@@ -10,9 +10,11 @@
 #include "default_meteor.h"
 #include "cleytin_audio_engine.h"
 #include "audios.h"
+#include "ce_multi_linear_move_animation.h"
 #include <functional>
 
-class EnemyShip : public CEColorfulBitmap {
+class EnemyShip : public CEColorfulBitmap
+{
 public:
     EnemyShip(unsigned int id);
     ~EnemyShip();
@@ -24,10 +26,12 @@ private:
     CleytinEngine *engine;
     void checkColisions();
     bool fire();
+    void prepareAnimation();
     uint64_t lastFire;
     unsigned int fireRate; // ms
     unsigned int id;
     std::function<void()> onShipDestroyed;
+    CEMultiLinearMoveAnimation *animation;
 };
 
 #endif

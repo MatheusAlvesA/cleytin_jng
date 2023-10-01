@@ -74,7 +74,7 @@ void FASE2::clean() {
 
 void FASE2::spawnEnemy() {
     int enemiesOnScreen = this->enemiesSpawned - this->score;
-    if(this->enemiesSpawned >= FASE_2_SCORE_TO_PASS || enemiesOnScreen >= 3) {
+    if(this->enemiesSpawned >= FASE_2_SCORE_TO_PASS || enemiesOnScreen >= 2) {
         return;
     }
 

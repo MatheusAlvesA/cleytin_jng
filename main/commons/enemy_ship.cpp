@@ -90,12 +90,10 @@ void EnemyShip::loop(CleytinEngine *engine)
 
 void EnemyShip::prepareAnimation()
 {
-    if(this->id > 0) {
-        return;
-    }
     if (this->animation != NULL)
         delete this->animation;
     this->animation = new CEMultiLinearMoveAnimation();
+    this->animation->setIsLooping(true);
     this->animation->setObject(this);
     this->animation->setDuration(5000);
     std::vector<CEPoint *> *steps = new std::vector<CEPoint *>();
@@ -103,16 +101,30 @@ void EnemyShip::prepareAnimation()
     {
     case 0:
         steps->push_back(new CEPoint(50, 0));
-        steps->push_back(new CEPoint(200, 0));
-        steps->push_back(new CEPoint(200, 50));
-        steps->push_back(new CEPoint(50, 50));
+        steps->push_back(new CEPoint(280, 0));
+        steps->push_back(new CEPoint(280, 100));
+        steps->push_back(new CEPoint(50, 100));
         steps->push_back(new CEPoint(50, 0));
         break;
     case 1:
+        steps->push_back(new CEPoint(140, 0));
+        steps->push_back(new CEPoint(280, 100));
+        steps->push_back(new CEPoint(50, 100));
+        steps->push_back(new CEPoint(140, 0));
         break;
     case 2:
+        steps->push_back(new CEPoint(10, 50));
+        steps->push_back(new CEPoint(280, 50));
+        steps->push_back(new CEPoint(10, 50));
         break;
     case 3:
+        steps->push_back(new CEPoint(60, 10));
+        steps->push_back(new CEPoint(200, 10));
+        steps->push_back(new CEPoint(280, 50));
+        steps->push_back(new CEPoint(200, 100));
+        steps->push_back(new CEPoint(60, 100));
+        steps->push_back(new CEPoint(10, 50));
+        steps->push_back(new CEPoint(60, 10));
         break;
     default:
         steps->push_back(new CEPoint(50, 0));

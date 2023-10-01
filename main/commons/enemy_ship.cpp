@@ -90,16 +90,23 @@ void EnemyShip::loop(CleytinEngine *engine)
 
 void EnemyShip::prepareAnimation()
 {
+    if(this->id > 0) {
+        return;
+    }
     if (this->animation != NULL)
         delete this->animation;
     this->animation = new CEMultiLinearMoveAnimation();
     this->animation->setObject(this);
     this->animation->setDuration(5000);
-    std::vector<CELine *> *steps = new std::vector<CELine *>();
+    std::vector<CEPoint *> *steps = new std::vector<CEPoint *>();
     switch (this->id)
     {
     case 0:
-        steps->push_back(new CELine({20, 0}, {200, 0}));
+        steps->push_back(new CEPoint(50, 0));
+        steps->push_back(new CEPoint(200, 0));
+        steps->push_back(new CEPoint(200, 50));
+        steps->push_back(new CEPoint(50, 50));
+        steps->push_back(new CEPoint(50, 0));
         break;
     case 1:
         break;
@@ -108,11 +115,12 @@ void EnemyShip::prepareAnimation()
     case 3:
         break;
     default:
-        steps->push_back(new CELine({20, 0}, {200, 0}));
+        steps->push_back(new CEPoint(50, 0));
+        steps->push_back(new CEPoint(200, 0));
         break;
     }
     this->animation->setSteps(steps);
-    delete_pointers_vector<CELine>(steps);
+    delete_pointers_vector<CEPoint>(steps);
     this->animation->start();
 }
 

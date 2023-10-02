@@ -11,10 +11,13 @@
 #include "cleytin_audio_engine.h"
 #include "ce_rectangle.h"
 #include "enemy_ship.h"
+#include "ce_timer.h"
 #include <string>
 
 #define FASE_2_ENEMY_SPAWN_INTERVAL 3000
 #define FASE_2_SCORE_TO_PASS 5
+#define FASE_2_MAX_ENEMIES_ON_SCREEN 2
+#define FASE_2_TIME_TO_PASS 20000
 
 class FASE2 {
 public:
@@ -31,6 +34,7 @@ private:
     void setupMainShip();
     void clean();
     void opening();
+    bool pacificPass();
     unsigned int enemiesSpawned;
     uint64_t lastEnemySpawn;
     unsigned int score;
@@ -39,6 +43,7 @@ private:
     CleytinEngine *engine;
     CleytinAudioEngine *audioEngine;
     CleytinControls *controls;
+    CETimer *timerToPass;
 };
 
 #endif

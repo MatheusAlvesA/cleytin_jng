@@ -11,7 +11,10 @@
 #include "cleytin_audio_engine.h"
 #include "audios.h"
 #include "ce_multi_linear_move_animation.h"
+#include "ce_timer.h"
 #include <functional>
+
+#define ENEMY_SHIP_FIRE_RATE 2000
 
 class EnemyShip : public CEColorfulBitmap
 {
@@ -21,17 +24,18 @@ public:
     void setup(CleytinEngine *engine);
     void loop(CleytinEngine *engine);
     void setOnShipDestroyed(std::function<void()> callback);
+    void onCompanionDied();
 
 private:
     CleytinEngine *engine;
     void checkColisions();
     bool fire();
     void prepareAnimation();
-    uint64_t lastFire;
-    unsigned int fireRate; // ms
     unsigned int id;
+    bool companionDied;
     std::function<void()> onShipDestroyed;
     CEMultiLinearMoveAnimation *animation;
+    CETimer *fireTimer;
 };
 
 #endif

@@ -4,16 +4,21 @@ EnemyShip::EnemyShip(unsigned int id)
 {
     this->engine = NULL;
     this->animation = NULL;
-    this->lastFire = 0;
-    this->fireRate = 500;
     this->onShipDestroyed = NULL;
     this->id = id;
+    this->companionDied = false;
+    this->fireTimer = new CETimer(ENEMY_SHIP_FIRE_RATE);
 }
 
 EnemyShip::~EnemyShip()
 {
     if (this->animation != NULL)
         delete this->animation;
+    delete this->fireTimer;
+}
+
+void EnemyShip::onCompanionDied() {
+    this->companionDied = true;
 }
 
 void EnemyShip::setOnShipDestroyed(std::function<void()> callback)
@@ -86,6 +91,7 @@ void EnemyShip::loop(CleytinEngine *engine)
     this->checkColisions();
     if (this->animation != NULL)
         this->animation->loop();
+    this->fire();
 }
 
 void EnemyShip::prepareAnimation()
@@ -138,19 +144,18 @@ void EnemyShip::prepareAnimation()
 
 bool EnemyShip::fire()
 {
-    if (this->engine == NULL)
+    if (
+        this->engine == NULL ||
+        !this->companionDied ||
+        !this->fireTimer->check()
+    )
     {
         return false;
     }
-    uint64_t elapsed = esp_timer_get_time() - this->lastFire;
-    if (elapsed < this->fireRate * 1000)
-    {
-        return false;
-    }
-    this->lastFire = esp_timer_get_time();
+    this->fireTimer->reset();
 
     MainLaserBeam *laserBeam = new MainLaserBeam();
-    laserBeam->setPos(this->getPosX() + 14, this->getPosY() - 22);
+    laserBeam->setPos(this->getPosX() + 14, this->getPosY() - 2);
     this->engine->addObject(laserBeam);
 
     return true;

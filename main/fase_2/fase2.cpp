@@ -6,6 +6,7 @@ FASE2::FASE2() {
     this->score = 0;
     this->mainShipDestroyed = false;
     this->enemiesSpawned = 0;
+    this->timerToPass = NULL;
 }
 
 bool FASE2::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine) {
@@ -29,7 +30,12 @@ bool FASE2::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEn
     uint64_t loopTime = 0;
     uint64_t renderTime = 0;
     this->updateScoreDisplay();
-    while(!this->mainShipDestroyed && this->score < FASE_2_SCORE_TO_PASS) {
+    this->timerToPass = new CETimer(FASE_2_TIME_TO_PASS);
+    while(
+        !this->mainShipDestroyed &&
+        this->score < FASE_2_SCORE_TO_PASS &&
+        !this->pacificPass()
+    ) {
         uint64_t startLoop = esp_timer_get_time();
         this->spawnEnemy();
         loopTime += engine->loop();
@@ -62,6 +68,11 @@ bool FASE2::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEn
     return false;
 }
 
+bool FASE2::pacificPass() {
+    if(this->timerToPass == NULL) return false;
+    return this->timerToPass->check() && this->score <= 0;
+}
+
 void FASE2::clean() {
     this->engine->clear(true);
     this->audioEngine->clear();
@@ -70,11 +81,18 @@ void FASE2::clean() {
     this->score = 0;
     this->lastEnemySpawn = 0;
     this->enemiesSpawned = 0;
+    if(this->timerToPass != NULL) {
+        delete this->timerToPass;
+        this->timerToPass = NULL;
+    }
 }
 
 void FASE2::spawnEnemy() {
     int enemiesOnScreen = this->enemiesSpawned - this->score;
-    if(this->enemiesSpawned >= FASE_2_SCORE_TO_PASS || enemiesOnScreen >= 2) {
+    if(
+        this->enemiesSpawned >= FASE_2_SCORE_TO_PASS ||
+        enemiesOnScreen >= FASE_2_MAX_ENEMIES_ON_SCREEN
+    ) {
         return;
     }
 
@@ -88,6 +106,8 @@ void FASE2::spawnEnemy() {
     enemy->setOnShipDestroyed([&](){
         this->onEnemyDestroyed();
     });
+    if(this->score > 0)
+        enemy->onCompanionDied();
     this->engine->addObject(enemy);
     this->lastEnemySpawn = esp_timer_get_time();
     this->enemiesSpawned++;
@@ -96,6 +116,17 @@ void FASE2::spawnEnemy() {
 void FASE2::onEnemyDestroyed() {
     this->score = this->score + 1;
     this->updateScoreDisplay();
+    // O primeiro inimigo foi destruido
+    if(this->score == 1) {
+        std::vector<CEGraphicObject*>* objs = this->engine->getObjects();
+        for (size_t i = 0; i < objs->size(); i++)
+        {
+            EnemyShip *enemy = dynamic_cast<EnemyShip *>(objs->at(i));
+            if(enemy == NULL) continue;
+            enemy->onCompanionDied();
+        }
+        delete objs;
+    }
 }
 
 void FASE2::onMainShipDestroyed() {

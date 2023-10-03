@@ -56,17 +56,12 @@ void EnemyShip::setup(CleytinEngine *engine)
     this->prepareAnimation();
 }
 
-void EnemyShip::checkColisions()
+bool EnemyShip::checkColisions()
 {
-    if (this->onShipDestroyed == NULL)
-    {
-        return;
-    }
-
+    printf("%d>>> Checking collisions\n", this->id);
     std::vector<size_t> *r = this->engine->getCollisionsOn(this);
     bool destroyed = false;
-    for (size_t i = 0; i < r->size(); i++)
-    {
+    for (size_t i = 0; i < r->size(); i++) {
         CEGraphicObject *obj = engine->getObjectAt(r->at(i));
         MainLaserBeam *laser = dynamic_cast<MainLaserBeam *>(obj);
         if (laser == NULL)
@@ -79,16 +74,31 @@ void EnemyShip::checkColisions()
     }
 
     delete r;
-    if (destroyed)
-    {
+    if (destroyed) {
         this->engine->markToDelete(this);
-        this->onShipDestroyed();
+        if(this->onShipDestroyed != NULL) 
+            this->onShipDestroyed();
+        this->explosion();
     }
+    if(destroyed)
+        printf("%d>>> SIM\n", this->id);
+    else
+        printf("%d>>> NAO\n", this->id);
+    return destroyed;
+}
+
+void EnemyShip::explosion()
+{
+    DefaultExplosion *explosion = new DefaultExplosion();
+    explosion->setPos(this->getPosX(), this->getPosY());
+    this->engine->addObject(explosion);
 }
 
 void EnemyShip::loop(CleytinEngine *engine)
 {
-    this->checkColisions();
+    if(this->checkColisions()) {
+        return;
+    }
     if (this->animation != NULL)
         this->animation->loop();
     this->fire();

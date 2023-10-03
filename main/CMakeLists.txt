@@ -7,5 +7,6 @@ idf_component_register(SRCS
                             "commons/enemy_laser_beam.cpp"
                             "commons/default_meteor.cpp"
                             "commons/enemy_ship.cpp" 
-                            "commons/enemy_dialog.cpp" 
+                            "commons/enemy_dialog.cpp"
+                            "commons/default_explosion.cpp"
                     INCLUDE_DIRS "include")

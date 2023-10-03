@@ -13,6 +13,7 @@
 #include "audios.h"
 #include "ce_multi_linear_move_animation.h"
 #include "ce_timer.h"
+#include "default_explosion.h"
 #include <functional>
 
 #define ENEMY_SHIP_FIRE_RATE 2000
@@ -29,9 +30,10 @@ public:
 
 private:
     CleytinEngine *engine;
-    void checkColisions();
+    bool checkColisions();
     bool fire();
     void prepareAnimation();
+    void explosion();
     unsigned int id;
     bool companionDied;
     std::function<void()> onShipDestroyed;

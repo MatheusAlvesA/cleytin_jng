@@ -12,12 +12,14 @@
 #include "ce_rectangle.h"
 #include "enemy_ship.h"
 #include "ce_timer.h"
+#include "enemy_dialog.h"
 #include <string>
 
 #define FASE_2_ENEMY_SPAWN_INTERVAL 3000
 #define FASE_2_SCORE_TO_PASS 5
 #define FASE_2_MAX_ENEMIES_ON_SCREEN 2
 #define FASE_2_TIME_TO_PASS 20000
+#define FASE_2_SHOW_PACIFIST_DIALOG 5000
 
 class FASE2 {
 public:
@@ -34,11 +36,13 @@ private:
     void setupMainShip();
     void clean();
     void opening();
+    void checkPacifistDialog();
     bool pacificPass();
     unsigned int enemiesSpawned;
     uint64_t lastEnemySpawn;
     unsigned int score;
     bool mainShipDestroyed;
+    bool pacifistDialogShown;
     CEText *scoreText;
     CleytinEngine *engine;
     CleytinAudioEngine *audioEngine;

@@ -7,6 +7,7 @@ FASE2::FASE2() {
     this->mainShipDestroyed = false;
     this->enemiesSpawned = 0;
     this->timerToPass = NULL;
+    this->pacifistDialogShown = false;
 }
 
 bool FASE2::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine) {
@@ -38,6 +39,7 @@ bool FASE2::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEn
     ) {
         uint64_t startLoop = esp_timer_get_time();
         this->spawnEnemy();
+        this->checkPacifistDialog();
         loopTime += engine->loop();
         renderTime += engine->render();
         n++;
@@ -81,11 +83,25 @@ void FASE2::clean() {
     this->score = 0;
     this->lastEnemySpawn = 0;
     this->enemiesSpawned = 0;
+    this->pacifistDialogShown = false;
     if(this->timerToPass != NULL) {
         delete this->timerToPass;
         this->timerToPass = NULL;
     }
 }
+
+void FASE2::checkPacifistDialog() {
+    if(
+        this->score <= 0 &&
+        this->timerToPass->elapsed() >= FASE_2_SHOW_PACIFIST_DIALOG &&
+        !this->pacifistDialogShown
+    ) {
+        EnemyDialog *dialog = new EnemyDialog();
+        this->engine->addObject(dialog);
+        this->pacifistDialogShown = true;
+    }
+}
+
 
 void FASE2::spawnEnemy() {
     int enemiesOnScreen = this->enemiesSpawned - this->score;

@@ -7,6 +7,7 @@
 #include "cleytin_controls.h"
 #include "ce_move_controls.h"
 #include "main_laser_beam.h"
+#include "enemy_laser_beam.h"
 #include "default_meteor.h"
 #include "cleytin_audio_engine.h"
 #include "audios.h"

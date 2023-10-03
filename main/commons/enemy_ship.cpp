@@ -154,8 +154,8 @@ bool EnemyShip::fire()
     }
     this->fireTimer->reset();
 
-    MainLaserBeam *laserBeam = new MainLaserBeam();
-    laserBeam->setPos(this->getPosX() + 14, this->getPosY() - 2);
+    EnemyLaserBeam *laserBeam = new EnemyLaserBeam();
+    laserBeam->setPos(this->getPosX() + 14, this->getPosY() + 32);
     this->engine->addObject(laserBeam);
 
     return true;

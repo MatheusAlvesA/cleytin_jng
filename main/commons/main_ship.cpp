@@ -60,10 +60,11 @@ void MainShip::checkColisions(CleytinEngine *engine) {
     {
         CEGraphicObject *obj = engine->getObjectAt(r->at(i));
         DefaultMeteor *meteor = dynamic_cast<DefaultMeteor *>(obj);
-        if(meteor == NULL) {
+        EnemyLaserBeam *enemyLaser = dynamic_cast<EnemyLaserBeam *>(obj);
+        if(meteor == NULL && enemyLaser == NULL) {
             continue;
         }
-        // Aconteceu uma colisão com um meteoro
+        // Aconteceu uma colisão com um meteoro ou com um laser
         destroyed = true;
         break;
     }

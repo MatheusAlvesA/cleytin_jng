@@ -4,6 +4,7 @@ idf_component_register(SRCS
                             "fase_2/fase2.cpp"
                             "commons/main_ship.cpp"
                             "commons/main_laser_beam.cpp"
+                            "commons/enemy_laser_beam.cpp"
                             "commons/default_meteor.cpp"
                             "commons/enemy_ship.cpp" 
                             "commons/enemy_dialog.cpp" 

@@ -14,6 +14,7 @@ public:
     ~DefaultExplosion();
     void setup(CleytinEngine *engine);
     void loop(CleytinEngine *engine);
+    void beforeLoop(CleytinEngine *engine);
 
 private:
     CEColorBitmapSpriteAnimation *animation;

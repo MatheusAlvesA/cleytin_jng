@@ -112,7 +112,7 @@ void FASE1::opening() {
     text->setPriority(2);
     this->engine->addObject(text);
 
-    this->engine->render();
+    this->engine->loopAndRender();
     cleytin_delay(3000);
 
     this->engine->clear(true);
@@ -129,7 +129,7 @@ void FASE1::gameOver() {
     this->engine->addObject(text);
 
     while(!this->controls->getStart()) {
-        this->engine->render();
+        this->engine->loopAndRender();
     }
 
     this->engine->clear(true);

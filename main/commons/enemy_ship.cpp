@@ -58,7 +58,6 @@ void EnemyShip::setup(CleytinEngine *engine)
 
 bool EnemyShip::checkColisions()
 {
-    printf("%d>>> Checking collisions\n", this->id);
     std::vector<size_t> *r = this->engine->getCollisionsOn(this);
     bool destroyed = false;
     for (size_t i = 0; i < r->size(); i++) {
@@ -80,10 +79,6 @@ bool EnemyShip::checkColisions()
             this->onShipDestroyed();
         this->explosion();
     }
-    if(destroyed)
-        printf("%d>>> SIM\n", this->id);
-    else
-        printf("%d>>> NAO\n", this->id);
     return destroyed;
 }
 

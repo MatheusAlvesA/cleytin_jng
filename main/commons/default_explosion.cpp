@@ -28,9 +28,15 @@ void DefaultExplosion::setup(CleytinEngine *engine) {
     this->animation->start();
 }
 
-void DefaultExplosion::loop(CleytinEngine *engine) {
+void DefaultExplosion::beforeLoop(CleytinEngine *engine) {
     if(this->animation->isFinished()) {
         engine->markToDelete(this);
+        return;
+    }
+}
+
+void DefaultExplosion::loop(CleytinEngine *engine) {
+    if(this->animation->isFinished()) {
         return;
     }
     this->animation->loop();

@@ -15,7 +15,6 @@ void DefaultExplosion::setup(CleytinEngine *engine) {
     this->setAlphaColor(0xFFFF);
     this->setColisionEnabled(false);
 
-    this->animation = new CEColorBitmapSpriteAnimation();
     this->animation->setObject(this);
     this->animation->setDuration(600);
     std::vector<const uint16_t *> *sprites = new std::vector<const uint16_t *>();

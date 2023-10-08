@@ -27,6 +27,9 @@ void app_main(void)
     }
     delete fase1;
     delete fase2;
+    delete engine;
+    delete controls;
+    delete audioEngine;
 }
 
 }

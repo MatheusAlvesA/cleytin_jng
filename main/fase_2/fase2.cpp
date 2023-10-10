@@ -10,7 +10,7 @@ FASE2::FASE2() {
     this->pacifistDialogShown = false;
 }
 
-bool FASE2::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine) {
+bool FASE2::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine, bool *pacifist) {
     this->engine = engine;
     this->audioEngine = audioEngine;
     this->controls = controls;
@@ -66,6 +66,7 @@ bool FASE2::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEn
         return true;
     }
 
+    *pacifist = this->pacificPass();
     this->clean();
     return false;
 }

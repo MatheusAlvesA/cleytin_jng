@@ -1,5 +1,5 @@
-#ifndef FASE_2_JNG
-#define FASE_2_JNG
+#ifndef FASE_3_JNG
+#define FASE_3_JNG
 
 #include "cleytin_engine.h"
 #include "sprites.h"
@@ -15,35 +15,27 @@
 #include "enemy_dialog.h"
 #include <string>
 
-#define FASE_2_ENEMY_SPAWN_INTERVAL 3000
-#define FASE_2_SCORE_TO_PASS 5
-#define FASE_2_MAX_ENEMIES_ON_SCREEN 2
-#define FASE_2_TIME_TO_PASS 20000
-#define FASE_2_SHOW_PACIFIST_DIALOG 5000
-
-class FASE2 {
+class FASE3 {
 public:
-    FASE2();
-    bool run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine, bool *pacifist);
+    FASE3();
+    bool run(
+        CleytinEngine *engine,
+        CleytinControls *controls,
+        CleytinAudioEngine *audioEngine,
+        bool pacifist
+    );
     void onEnemyDestroyed();
     void onMainShipDestroyed();
-    void updateScoreDisplay();
     void gameOver();
 
 private:
-    void spawnEnemy();
-    void setupBackground(bool withScore);
+    void setupBackground();
     void setupMainShip();
     void clean();
     void opening();
-    void checkPacifistDialog();
     bool pacificPass();
-    unsigned int enemiesSpawned;
-    uint64_t lastEnemySpawn;
-    unsigned int score;
     bool mainShipDestroyed;
-    bool pacifistDialogShown;
-    CEText *scoreText;
+    bool pacifist;
     CleytinEngine *engine;
     CleytinAudioEngine *audioEngine;
     CleytinControls *controls;

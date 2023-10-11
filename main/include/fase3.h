@@ -13,7 +13,10 @@
 #include "enemy_ship.h"
 #include "ce_timer.h"
 #include "enemy_dialog.h"
+#include "mothership.h"
 #include <string>
+
+#define FASE_3_TIME_TO_PASS 20000
 
 class FASE3 {
 public:
@@ -22,7 +25,7 @@ public:
         CleytinEngine *engine,
         CleytinControls *controls,
         CleytinAudioEngine *audioEngine,
-        bool pacifist
+        bool *pacifist
     );
     void onEnemyDestroyed();
     void onMainShipDestroyed();
@@ -30,11 +33,12 @@ public:
 
 private:
     void setupBackground();
-    void setupMainShip();
+    void setupShips();
     void clean();
     void opening();
     bool pacificPass();
     bool mainShipDestroyed;
+    bool mothershipDestroyed;
     bool pacifist;
     CleytinEngine *engine;
     CleytinAudioEngine *audioEngine;

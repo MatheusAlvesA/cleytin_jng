@@ -3,13 +3,14 @@
 FASE3::FASE3() {
     this->mainShipDestroyed = false;
     this->timerToPass = NULL;
+    this->mothershipDestroyed = false;
 }
 
-bool FASE3::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine, bool pacifist) {
+bool FASE3::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine, bool *pacifist) {
     this->engine = engine;
     this->audioEngine = audioEngine;
     this->controls = controls;
-    this->pacifist = pacifist;
+    this->pacifist = *pacifist;
 
     this->opening();
 
@@ -19,7 +20,8 @@ bool FASE3::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEn
     audio->play();
 
     this->setupBackground();
-    this->setupMainShip();
+    this->setupShips();
+    this->timerToPass = new CETimer(FASE_3_TIME_TO_PASS);
 
     uint64_t start = esp_timer_get_time();
     uint64_t sum = 0;
@@ -28,6 +30,7 @@ bool FASE3::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEn
     uint64_t renderTime = 0;
     while(
         !this->mainShipDestroyed &&
+        !this->mothershipDestroyed &&
         !this->pacificPass()
     ) {
         uint64_t startLoop = esp_timer_get_time();
@@ -57,6 +60,7 @@ bool FASE3::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEn
         return true;
     }
 
+    *pacifist = !this->mothershipDestroyed;
     this->clean();
     return false;
 }
@@ -70,6 +74,7 @@ void FASE3::clean() {
     this->engine->clear(true);
     this->audioEngine->clear();
     this->mainShipDestroyed = false;
+    this->mothershipDestroyed = false;
     if(this->timerToPass != NULL) {
         delete this->timerToPass;
         this->timerToPass = NULL;
@@ -77,7 +82,7 @@ void FASE3::clean() {
 }
 
 void FASE3::onEnemyDestroyed() {
-    //TODO
+    this->mothershipDestroyed = true;
 }
 
 void FASE3::onMainShipDestroyed() {
@@ -135,7 +140,7 @@ void FASE3::setupBackground() {
     this->engine->addObject(bitmap);
 }
 
-void FASE3::setupMainShip() {
+void FASE3::setupShips() {
     MainShip *mainShip = new MainShip();
     mainShip->setControls(this->controls);
     mainShip->setAudioInterface(this->audioEngine);
@@ -143,4 +148,10 @@ void FASE3::setupMainShip() {
         this->onMainShipDestroyed();
     });
     this->engine->addObject(mainShip);
+
+    Mothership *mothership = new Mothership(this->pacifist);
+    mothership->setOnShipDestroyed([&](){
+        this->onEnemyDestroyed();
+    });
+    this->engine->addObject(mothership);
 }

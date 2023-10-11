@@ -25,12 +25,12 @@ void app_main(void)
 
         engine->clear(true);
         audioEngine->clear();
-        bool pacifist = false;
-        if(fase2->run(engine, controls, audioEngine, &pacifist)) continue;
+        bool pacifist = true;
+        //if(fase2->run(engine, controls, audioEngine, &pacifist)) continue;
 
         engine->clear(true);
         audioEngine->clear();
-        if(fase3->run(engine, controls, audioEngine, pacifist)) continue;
+        if(fase3->run(engine, controls, audioEngine, &pacifist)) continue;
     }
     delete fase1;
     delete fase2;

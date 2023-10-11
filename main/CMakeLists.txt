@@ -10,4 +10,5 @@ idf_component_register(SRCS
                             "commons/enemy_ship.cpp" 
                             "commons/enemy_dialog.cpp"
                             "commons/default_explosion.cpp"
+                            "fase_3/mothership.cpp" 
                     INCLUDE_DIRS "include")

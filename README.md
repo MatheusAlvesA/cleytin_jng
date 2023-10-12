@@ -10,3 +10,5 @@ Este projeto é um jogo de nave simples, como prova de conceito para o console C
 [Backgrounds: Deepfold](https://deep-fold.itch.io/space-background-generator)  
 [Background do score: Buch](https://opengameart.org/content/golden-ui)  
 [Explosão: Sogomn](https://opengameart.org/content/explosion-3)
+[Nave mãe: arin48](https://opengameart.org/content/top-down-spaceships)
+[Rostos: Jerom](https://opengameart.org/content/heads-retro)

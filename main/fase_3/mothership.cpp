@@ -61,7 +61,6 @@ void Mothership::checkColisions()
 void Mothership::takeDamage() {
     if(this->health == 0) return;
     this->health--;
-    printf("Mothership health: %d\n", this->health);
     this->animation->setDuration(5000);
     this->pacifist = false;
     if(this->health == 0) {

@@ -25,7 +25,7 @@ void MainShip::setup(CleytinEngine *engine) {
     this->setWidth(32);
     this->setAlphaColor(0x0);
     this->setPos(144, 208); // Spaw, inferior centro da tela
-    this->setPriority(10);
+    this->setPriority(100);
     this->engine = engine;
 }
 

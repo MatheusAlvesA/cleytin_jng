@@ -141,7 +141,7 @@ void FASE1::updateScoreDisplay() {
         this->scoreText->setBaseColor({255, 0, 255});
         this->scoreText->setPos(10, 10);
         this->scoreText->setColisionEnabled(false);
-        this->scoreText->setPriority(100);
+        this->scoreText->setPriority(10);
         this->scoreText->setSizeMultiplier(2);
         this->engine->addObject(this->scoreText);
     }

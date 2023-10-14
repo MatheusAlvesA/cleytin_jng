@@ -21,12 +21,12 @@ void app_main(void)
     while(1) {
         engine->clear(true);
         audioEngine->clear();
-        if(fase1->run(engine, controls, audioEngine)) continue;
+        //if(fase1->run(engine, controls, audioEngine)) continue;
 
         engine->clear(true);
         audioEngine->clear();
         bool pacifist = true;
-        if(fase2->run(engine, controls, audioEngine, &pacifist)) continue;
+        //if(fase2->run(engine, controls, audioEngine, &pacifist)) continue;
 
         engine->clear(true);
         audioEngine->clear();

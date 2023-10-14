@@ -12,11 +12,14 @@
 #include "cleytin_audio_engine.h"
 #include "audios.h"
 #include "ce_multi_linear_move_animation.h"
+#include "ce_pixel_shader_animation.h"
 #include "ce_timer.h"
 #include "default_explosion.h"
 
 #define MOTHERSHIP_FIRE_RATE 2000
 #define MOTHERSHIP_START_HEALTH 20
+
+void _mothership_damage_pixel_shader(CEGraphicObject* obj, int x, int y, CEColor *color);
 
 class Mothership : public CEColorfulBitmap
 {
@@ -38,6 +41,7 @@ private:
     void takeDamage();
     std::function<void()> onShipDestroyed;
     CEMultiLinearMoveAnimation *animation;
+    CEPixelShaderAnimation *damageAnimation;
     CETimer *leftFireTimer;
     CETimer *rightFireTimer;
     bool pacifist;

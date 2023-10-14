@@ -1,5 +1,13 @@
 #include "mothership.h"
 
+void _mothership_damage_pixel_shader(CEGraphicObject* obj, int x, int y, CEColor *color) {
+    if(color->red <= 205) {
+        color->red += 50;
+    } else {
+        color->red = 255;
+    }
+}
+
 Mothership::Mothership(bool startPacifist)
 {
     this->engine = NULL;
@@ -9,6 +17,7 @@ Mothership::Mothership(bool startPacifist)
     this->rightFireTimer = new CETimer(MOTHERSHIP_FIRE_RATE + 100);
     this->pacifist = startPacifist;
     this->health = MOTHERSHIP_START_HEALTH;
+    this->damageAnimation = new CEPixelShaderAnimation();
 }
 
 Mothership::~Mothership()
@@ -17,6 +26,7 @@ Mothership::~Mothership()
         delete this->animation;
     delete this->leftFireTimer;
     delete this->rightFireTimer;
+    delete this->damageAnimation;
 }
 
 void Mothership::setOnShipDestroyed(std::function<void()> callback)
@@ -68,7 +78,8 @@ void Mothership::takeDamage() {
         if(this->onShipDestroyed != NULL) 
             this->onShipDestroyed();
         this->explosion();
-    }
+    } 
+    this->damageAnimation->start();
 }
 
 void Mothership::explosion()
@@ -82,6 +93,7 @@ void Mothership::loop(CleytinEngine *engine)
 {
     this->checkColisions();
     this->animation->loop();
+    this->damageAnimation->loop();
     this->fire();
 }
 
@@ -104,6 +116,10 @@ void Mothership::prepareAnimation()
     this->animation->setSteps(steps);
     delete_pointers_vector<CEPoint>(steps);
     this->animation->start();
+
+    this->damageAnimation->setObject(this);
+    this->damageAnimation->setDuration(150);
+    this->damageAnimation->setShader(_mothership_damage_pixel_shader);
 }
 
 void Mothership::fire()

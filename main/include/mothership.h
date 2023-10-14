@@ -14,7 +14,6 @@
 #include "ce_multi_linear_move_animation.h"
 #include "ce_timer.h"
 #include "default_explosion.h"
-#include <functional>
 
 #define MOTHERSHIP_FIRE_RATE 2000
 #define MOTHERSHIP_START_HEALTH 20

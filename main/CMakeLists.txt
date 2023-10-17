@@ -7,9 +7,10 @@ idf_component_register(SRCS
                             "commons/main_laser_beam.cpp"
                             "commons/enemy_laser_beam.cpp"
                             "commons/default_meteor.cpp"
-                            "commons/enemy_ship.cpp" 
+                            "commons/enemy_ship.cpp"
                             "commons/enemy_dialog.cpp"
                             "commons/default_explosion.cpp"
-                            "fase_3/mothership.cpp" 
-                            "tela_final/tela_final.cpp" 
+                            "fase_3/mothership.cpp"
+                            "tela_final/tela_final.cpp"
+                            "tela_inicial/tela_inicial.cpp"
                     INCLUDE_DIRS "include")

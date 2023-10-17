@@ -5,6 +5,7 @@
 #include "fase2.h"
 #include "fase3.h"
 #include "tela_final.h"
+#include "tela_inicial.h"
 
 extern "C" {
 
@@ -16,11 +17,16 @@ void app_main(void)
     CleytinAudioEngine *audioEngine = new CleytinAudioEngine();
     audioEngine->init();
 
+    TelaInicial *telaInicial = new TelaInicial();
     FASE1 *fase1 = new FASE1();
     FASE2 *fase2 = new FASE2();
     FASE3 *fase3 = new FASE3();
     TelaFinal *telaFinal = new TelaFinal();
     while(1) {
+        engine->clear(true);
+        audioEngine->clear();
+        telaInicial->run(engine, controls);
+
         engine->clear(true);
         audioEngine->clear();
         if(fase1->run(engine, controls, audioEngine)) continue;
@@ -36,7 +42,7 @@ void app_main(void)
 
         engine->clear(true);
         audioEngine->clear();
-        if(telaFinal->run(engine, audioEngine, pacifist)) continue;
+        telaFinal->run(engine, audioEngine, pacifist);
     }
     delete fase1;
     delete fase2;

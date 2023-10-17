@@ -11,6 +11,9 @@ bool TelaFinal::run(CleytinEngine *engine, CleytinAudioEngine *audioEngine, bool
     audio->play();
 
     this->dialog();
+    this->creditos1();
+    this->creditos2();
+    this->creditos3();
 
     this->clean();
     return false;
@@ -61,6 +64,83 @@ void TelaFinal::dialog() {
     }
 
     this->engine->clear(true);
+}
+
+void TelaFinal::creditos1() {
+    CERectangle *rect = new CERectangle();
+    rect->setBaseColor({0, 0, 0});
+    rect->setHeight(240);
+    rect->setWidth(320);
+    rect->setPos(0, 0);
+    rect->setFilled(true);
+    this->engine->addObject(rect);
+
+    this->generateText("Artes de sprites (Open Game Art)", 20, 10, 1);
+    this->generateText("FunwithPixels", 40, 30, 2);
+    this->generateText("Irmandito", 40, 60, 2);
+    this->generateText("Deepfold", 40, 90, 2);
+    this->generateText("Buch", 40, 120, 2);
+    this->generateText("Sogomn", 40, 150, 2);
+    this->generateText("arin48", 40, 180, 2);
+    this->generateText("Jerom", 40, 210, 2);
+
+    CETimer timer(5000);
+    while(!timer.check()) {
+        this->engine->loopAndRender();
+    }
+
+    this->engine->clear(true);
+}
+
+
+void TelaFinal::creditos2() {
+    CERectangle *rect = new CERectangle();
+    rect->setBaseColor({0, 0, 0});
+    rect->setHeight(240);
+    rect->setWidth(320);
+    rect->setPos(0, 0);
+    rect->setFilled(true);
+    this->engine->addObject(rect);
+
+    this->generateText("Desenvolvido pelo", 20, 60, 2);
+    this->generateText("Matheus", 60, 110, 3);
+
+    CETimer timer(3000);
+    while(!timer.check()) {
+        this->engine->loopAndRender();
+    }
+
+    this->engine->clear(true);
+}
+
+void TelaFinal::creditos3() {
+    CERectangle *rect = new CERectangle();
+    rect->setBaseColor({0, 0, 0});
+    rect->setHeight(240);
+    rect->setWidth(320);
+    rect->setPos(0, 0);
+    rect->setFilled(true);
+    this->engine->addObject(rect);
+
+    this->generateText("Obrigado por Jogar!", 10, 90, 2);
+
+    CETimer timer(5000);
+    while(!timer.check()) {
+        this->engine->loopAndRender();
+    }
+
+    this->engine->clear(true);
+}
+
+
+void TelaFinal::generateText(const char* text, int x, int y, uint8_t size) {
+    CEText *textObj = new CEText();
+    textObj->setText(text);
+    textObj->setBaseColor({255, 255, 255});
+    textObj->setPos(x, y);
+    textObj->setPriority(2);
+    textObj->setSizeMultiplier(size);
+    this->engine->addObject(textObj);
 }
 
 void TelaFinal::setupBackground() {

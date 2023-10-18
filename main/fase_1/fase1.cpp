@@ -97,7 +97,7 @@ void FASE1::onMainShipDestroyed() {
 
 void FASE1::opening() {
     CERectangle *rect = new CERectangle();
-    rect->setBaseColor({0, 0, 0});
+    rect->setBaseColor({0, 21, 36});
     rect->setHeight(240);
     rect->setWidth(320);
     rect->setPos(0, 0);
@@ -138,7 +138,7 @@ void FASE1::gameOver() {
 void FASE1::updateScoreDisplay() {
     if(this->scoreText == NULL) {
         this->scoreText = new CEText();
-        this->scoreText->setBaseColor({255, 0, 255});
+        this->scoreText->setBaseColor({182, 255, 250});
         this->scoreText->setPos(10, 10);
         this->scoreText->setColisionEnabled(false);
         this->scoreText->setPriority(10);

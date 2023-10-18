@@ -11,6 +11,7 @@
 #include "default_meteor.h"
 #include "cleytin_audio_engine.h"
 #include "audios.h"
+#include "default_explosion.h"
 #include <functional>
 
 class MainShip : public CEColorfulBitmap {
@@ -31,6 +32,7 @@ private:
     void handleControls();
     void checkColisions(CleytinEngine *engine);
     bool fire();
+    void onDestroyed();
     uint64_t lastFire;
     unsigned int fireRate; // ms
     std::function<void()> onMainShipDestroyed;

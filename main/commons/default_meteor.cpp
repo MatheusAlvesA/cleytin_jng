@@ -3,6 +3,7 @@
 DefaultMeteor::DefaultMeteor() {
     this->animation = NULL;
     this->onDestroyed = NULL;
+    this->engine = NULL;
 }
 
 DefaultMeteor::~DefaultMeteor() {
@@ -17,6 +18,8 @@ void DefaultMeteor::setOnDestroyed(std::function<void()> callback) {
 }
 
 void DefaultMeteor::setup(CleytinEngine *engine) {
+    this->engine = engine;
+
     this->setBuffer(sprite_color_meteor_01);
     this->setHeight(63);
     this->setWidth(75);
@@ -34,47 +37,55 @@ void DefaultMeteor::loop(CleytinEngine *engine) {
         return;
     }
     if(this->animation->isFinished()) {
-        this->despawn(engine);
+        this->despawn();
         return;
     }
-    if(this->checkColisions(engine)) {
+    if(this->checkColisions()) {
         return;
     }
     this->animation->loop();
 }
 
-bool DefaultMeteor::checkColisions(CleytinEngine *engine) {
+bool DefaultMeteor::checkColisions() {
     if(this->onDestroyed == NULL) {
         return false;
     }
 
-    std::vector<size_t> *r = engine->getCollisionsOn(this);
+    std::vector<size_t> *r = this->engine->getCollisionsOn(this);
     bool destroyed = false;
     for (size_t i = 0; i < r->size(); i++)
     {
-        CEGraphicObject *obj = engine->getObjectAt(r->at(i));
+        CEGraphicObject *obj = this->engine->getObjectAt(r->at(i));
         MainLaserBeam *laser = dynamic_cast<MainLaserBeam *>(obj);
         if(laser == NULL) {
             continue;
         }
         // Aconteceu uma colisão com um tiro
         destroyed = true;
-        engine->markToDelete(laser);
+        this->engine->markToDelete(laser);
         break;
     }
 
     delete r;
     if(destroyed) {
-        this->despawn(engine);
+        this->despawn();
         this->onDestroyed();
+        this->explosion();
     }
     return destroyed;
 }
 
-void DefaultMeteor::despawn(CleytinEngine *engine) {
+void DefaultMeteor::despawn() {
     if(this->animation != NULL) {
         delete this->animation;
         this->animation = NULL;
     }
-    engine->markToDelete(this);
+    this->engine->markToDelete(this);
+}
+
+void DefaultMeteor::explosion() {
+    DefaultExplosion *explosion = new DefaultExplosion();
+    explosion->setSizeMultiplier(2);
+    explosion->setPos(this->getPosX(), this->getPosY());
+    this->engine->addObject(explosion);
 }

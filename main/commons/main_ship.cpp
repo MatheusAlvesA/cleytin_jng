@@ -71,13 +71,23 @@ void MainShip::checkColisions(CleytinEngine *engine) {
 
     delete r;
     if(destroyed) {
-        this->onMainShipDestroyed();
+        this->onDestroyed();
     }
 }
 
 void MainShip::loop(CleytinEngine *engine) {
     this->handleControls();
     this->checkColisions(engine);
+}
+
+void MainShip::onDestroyed() {
+    this->engine->markToDelete(this);
+
+    DefaultExplosion *explosion = new DefaultExplosion();
+    explosion->setPos(this->getPosX(), this->getPosY());
+    explosion->setOnFinished(this->onMainShipDestroyed);
+
+    this->engine->addObject(explosion);
 }
 
 bool MainShip::fire() {

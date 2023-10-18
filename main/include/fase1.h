@@ -13,7 +13,7 @@
 #include "ce_rectangle.h"
 #include <string>
 
-#define METEOR_SPAWN_INTERVAL 1500
+#define METEOR_SPAWN_INTERVAL 1200
 #define SCORE_TO_PASS 20
 
 class FASE1 {

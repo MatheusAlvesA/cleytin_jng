@@ -2,10 +2,15 @@
 
 DefaultExplosion::DefaultExplosion() {
     this->animation = new CEColorBitmapSpriteAnimation();
+    this->onFinished = NULL;
 }
 
 DefaultExplosion::~DefaultExplosion() {
     delete this->animation;
+}
+
+void DefaultExplosion::setOnFinished(std::function<void()> callback) {
+    this->onFinished = callback;
 }
 
 void DefaultExplosion::setup(CleytinEngine *engine) {
@@ -39,4 +44,10 @@ void DefaultExplosion::loop(CleytinEngine *engine) {
         return;
     }
     this->animation->loop();
+}
+
+void DefaultExplosion::beforeRemove(CleytinEngine *engine) {
+    if(this->onFinished != NULL) {
+        this->onFinished();
+    }
 }

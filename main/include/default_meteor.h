@@ -8,6 +8,7 @@
 #include "ce_move_controls.h"
 #include "ce_linear_move_animation.h"
 #include "main_laser_beam.h"
+#include "default_explosion.h"
 #include <functional>
 
 class DefaultMeteor : public CEColorfulBitmap {
@@ -17,12 +18,14 @@ public:
     void setup(CleytinEngine *engine);
     void loop(CleytinEngine *engine);
     void setOnDestroyed(std::function<void()> callback);
-    bool checkColisions(CleytinEngine *engine);
-    void despawn(CleytinEngine *engine);
+    bool checkColisions();
+    void despawn();
 
 private:
     CELinearMoveAnimation *animation;
     std::function<void()> onDestroyed = NULL;
+    CleytinEngine *engine;
+    void explosion();
 };
 
 #endif

@@ -125,21 +125,30 @@ void EnemyShip::prepareAnimation()
         break;
     case 2:
         steps->push_back(new CEPoint(10, 50));
-        steps->push_back(new CEPoint(280, 50));
+        steps->push_back(new CEPoint(280, 90));
+        steps->push_back(new CEPoint(10, 90));
+        steps->push_back(new CEPoint(280, 10));
+        steps->push_back(new CEPoint(10, 10));
         steps->push_back(new CEPoint(10, 50));
         break;
     case 3:
         steps->push_back(new CEPoint(60, 10));
         steps->push_back(new CEPoint(200, 10));
-        steps->push_back(new CEPoint(280, 50));
-        steps->push_back(new CEPoint(200, 100));
+        steps->push_back(new CEPoint(280, 100));
+        steps->push_back(new CEPoint(200, 150));
         steps->push_back(new CEPoint(60, 100));
         steps->push_back(new CEPoint(10, 50));
         steps->push_back(new CEPoint(60, 10));
         break;
     default:
-        steps->push_back(new CEPoint(50, 0));
+        steps->push_back(new CEPoint(20, 0));
+        steps->push_back(new CEPoint(90, 150));
+        steps->push_back(new CEPoint(130, 0));
+        steps->push_back(new CEPoint(160, 150));
         steps->push_back(new CEPoint(200, 0));
+        steps->push_back(new CEPoint(240, 150));
+        steps->push_back(new CEPoint(280, 0));
+        steps->push_back(new CEPoint(20, 0));
         break;
     }
     this->animation->setSteps(steps);

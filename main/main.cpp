@@ -25,11 +25,11 @@ void app_main(void)
     while(1) {
         engine->clear(true);
         audioEngine->clear();
-        telaInicial->run(engine, controls);
+        //telaInicial->run(engine, controls);
 
         engine->clear(true);
         audioEngine->clear();
-        if(fase1->run(engine, controls, audioEngine)) continue;
+        //if(fase1->run(engine, controls, audioEngine)) continue;
 
         engine->clear(true);
         audioEngine->clear();
@@ -51,6 +51,7 @@ void app_main(void)
     delete engine;
     delete controls;
     delete audioEngine;
+    delete telaInicial;
 }
 
 }

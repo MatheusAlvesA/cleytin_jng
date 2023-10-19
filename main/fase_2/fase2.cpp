@@ -2,12 +2,12 @@
 
 FASE2::FASE2() {
     this->scoreText = NULL;
-    this->lastEnemySpawn = 0;
     this->score = 0;
     this->mainShipDestroyed = false;
     this->enemiesSpawned = 0;
     this->timerToPass = NULL;
     this->pacifistDialogShown = false;
+    this->enemySpawnTimer = new CETimer(FASE_2_ENEMY_SPAWN_INTERVAL);
 }
 
 bool FASE2::run(CleytinEngine *engine, CleytinControls *controls, CleytinAudioEngine *audioEngine, bool *pacifist) {
@@ -82,13 +82,14 @@ void FASE2::clean() {
     this->scoreText = NULL;
     this->mainShipDestroyed = false;
     this->score = 0;
-    this->lastEnemySpawn = 0;
     this->enemiesSpawned = 0;
     this->pacifistDialogShown = false;
     if(this->timerToPass != NULL) {
         delete this->timerToPass;
         this->timerToPass = NULL;
     }
+    delete this->enemySpawnTimer;
+    this->enemySpawnTimer = new CETimer(FASE_2_ENEMY_SPAWN_INTERVAL);
 }
 
 void FASE2::checkPacifistDialog() {
@@ -113,20 +114,19 @@ void FASE2::spawnEnemy() {
         return;
     }
 
-    uint64_t elapsed_time_ms = (esp_timer_get_time() - this->lastEnemySpawn) / 1000;
-    if(elapsed_time_ms < FASE_2_ENEMY_SPAWN_INTERVAL) {
+    if(!this->enemySpawnTimer->check()) {
         return;
     }
 
     EnemyShip *enemy = new EnemyShip(this->enemiesSpawned);
-    enemy->setPos(rand() % 245, 0);
     enemy->setOnShipDestroyed([&](){
         this->onEnemyDestroyed();
     });
-    if(this->score > 0)
+    if(this->score > 0) {
         enemy->onCompanionDied();
+    }
     this->engine->addObject(enemy);
-    this->lastEnemySpawn = esp_timer_get_time();
+    this->enemySpawnTimer->reset();
     this->enemiesSpawned++;
 }
 
@@ -152,7 +152,7 @@ void FASE2::onMainShipDestroyed() {
 
 void FASE2::opening() {
     CERectangle *rect = new CERectangle();
-    rect->setBaseColor({0, 0, 0});
+    rect->setBaseColor({0, 21, 36});
     rect->setHeight(240);
     rect->setWidth(320);
     rect->setPos(0, 0);
@@ -193,7 +193,7 @@ void FASE2::gameOver() {
 void FASE2::updateScoreDisplay() {
     if(this->scoreText == NULL) {
         this->scoreText = new CEText();
-        this->scoreText->setBaseColor({255, 0, 255});
+        this->scoreText->setBaseColor({255, 0, 0});
         this->scoreText->setPos(10, 10);
         this->scoreText->setColisionEnabled(false);
         this->scoreText->setPriority(100);

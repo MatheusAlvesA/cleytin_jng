@@ -91,7 +91,7 @@ void FASE3::onMainShipDestroyed() {
 
 void FASE3::opening() {
     CERectangle *rect = new CERectangle();
-    rect->setBaseColor({0, 0, 0});
+    rect->setBaseColor({0, 21, 36});
     rect->setHeight(240);
     rect->setWidth(320);
     rect->setPos(0, 0);

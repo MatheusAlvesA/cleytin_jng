@@ -1,27 +1,17 @@
 #include "tela_final.h"
 
-bool TelaFinal::run(CleytinEngine *engine, CleytinAudioEngine *audioEngine, bool pacifist) {
+bool TelaFinal::run(CleytinEngine *engine, bool pacifist) {
     this->engine = engine;
-    this->audioEngine = audioEngine;
     this->pacifist = pacifist;
-
-    CleytinAudio *audio = NULL;
-    this->audioEngine->createAudio(wav_bin_musica_fundo, &audio);
-    audio->setLoop(true);
-    audio->play();
 
     this->dialog();
     this->creditos1();
     this->creditos2();
     this->creditos3();
+     this->creditos4();
 
-    this->clean();
-    return false;
-}
-
-void TelaFinal::clean() {
     this->engine->clear(true);
-    this->audioEngine->clear();
+    return false;
 }
 
 void TelaFinal::dialog() {
@@ -102,6 +92,26 @@ void TelaFinal::creditos2() {
     rect->setFilled(true);
     this->engine->addObject(rect);
 
+    this->generateText("Música (6581-8580.com)", 20, 60, 1);
+    this->generateText("Brandon Staggs", 20, 90, 2);
+
+    CETimer timer(3000);
+    while(!timer.check()) {
+        this->engine->loopAndRender();
+    }
+
+    this->engine->clear(true);
+}
+
+void TelaFinal::creditos3() {
+    CERectangle *rect = new CERectangle();
+    rect->setBaseColor({0, 0, 0});
+    rect->setHeight(240);
+    rect->setWidth(320);
+    rect->setPos(0, 0);
+    rect->setFilled(true);
+    this->engine->addObject(rect);
+
     this->generateText("Desenvolvido pelo", 20, 60, 2);
     this->generateText("Matheus", 60, 110, 3);
 
@@ -113,7 +123,7 @@ void TelaFinal::creditos2() {
     this->engine->clear(true);
 }
 
-void TelaFinal::creditos3() {
+void TelaFinal::creditos4() {
     CERectangle *rect = new CERectangle();
     rect->setBaseColor({0, 0, 0});
     rect->setHeight(240);

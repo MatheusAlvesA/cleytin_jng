@@ -12,3 +12,9 @@ Este projeto é um jogo de nave simples, como prova de conceito para o console C
 [Explosão: Sogomn](https://opengameart.org/content/explosion-3)
 [Nave mãe: arin48](https://opengameart.org/content/top-down-spaceships)
 [Rostos: Jerom](https://opengameart.org/content/heads-retro)
+
+
+## Audio
+
+[Phosphor Advance - Brandon Staggs (Obliterator918)](https://www.6581-8580.com/socse/index.php?field=year&sorting=year&view=ASC&page=1&wildcard=off&add_fields=&query=2017&term_counts=0)
+[Laser shot - dklon](https://opengameart.org/content/laser-fire)

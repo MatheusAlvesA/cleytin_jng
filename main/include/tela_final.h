@@ -14,23 +14,18 @@
 
 class TelaFinal {
 public:
-    bool run(
-        CleytinEngine *engine,
-        CleytinAudioEngine *audioEngine,
-        bool pacifist
-    );
+    bool run(CleytinEngine *engine, bool pacifist);
 
 private:
     void setupBackground();
-    void clean();
     void dialog();
     void creditos1();
     void creditos2();
     void creditos3();
+    void creditos4();
     void generateText(const char* text, int x, int y, uint8_t size);
     bool pacifist;
     CleytinEngine *engine;
-    CleytinAudioEngine *audioEngine;
 };
 
 #endif

@@ -42,7 +42,7 @@ void app_main(void)
 
         engine->clear(true);
         audioEngine->clear();
-        telaFinal->run(engine, audioEngine, pacifist);
+        telaFinal->run(engine, pacifist);
     }
     delete fase1;
     delete fase2;

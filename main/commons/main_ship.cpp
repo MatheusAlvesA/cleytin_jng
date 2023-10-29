@@ -105,7 +105,7 @@ bool MainShip::fire() {
     this->engine->addObject(laserBeam);
 
     if(this->audioInterface != NULL) {
-        this->audioInterface->playOnce(wav_bin_laser_default);
+        this->audioInterface->playOnce(wav_bin_laser_default, 50);
     }
 
     return true;
